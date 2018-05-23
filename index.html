@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PulseAudioWorklet</title>
+  <script defer type="module" src="app.js"></script>
+</head>
+<body>
+  <div>
+    <button id="play-button">Play/Stop</button>
+    <label>Tempo</label><input id="tempo" type="range" list="tickmarks" min="30.0" max="140.0" step="10" value="80">
+    <datalist id="tickmarks">
+      <option value="30"></option>
+      <option value="60"></option>
+      <option value="120"></option>
+    </datalist>
+
+    <div>
+      <span>Pulse Type:</span>
+      <input id="pulse-0" type="radio" name="pulse-type" value="0" checked>
+      <label for="pulse-0">Duty 0</label>
+      <input id="pulse-1" type="radio" name="pulse-type" value="1">
+      <label for="pulse-1">Duty 1</label>
+      <input id="pulse-2" type="radio" name="pulse-type" value="2">
+      <label for="pulse-2">Duty 2</label>
+      <input id="pulse-composed" type="radio" name="pulse-type" value="composed">
+      <label for="pulse-composed">Duty 012</label>
+    </div>
+  </div>
+  <div id="grid-container"></div>
+</body>
+</html>
