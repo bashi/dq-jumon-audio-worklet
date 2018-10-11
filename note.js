@@ -30,7 +30,7 @@ export class NoteGenerator {
 
     this.gainNode = audioContext.createGain();
     this.gainNode.connect(audioContext.destination);
-    this.gainNode.gain.value = 0.20;
+    this.gainNode.gain.value = 0.2;
 
     this.pulseType = '0';
   }
@@ -57,7 +57,10 @@ export class NoteGenerator {
   }
 
   generateSinglePulseNote(freq, start, noteLength, dutyIndex) {
-    const node = new PulseNode(this.audioContext, 'single-pulse-node-processor');
+    const node = new PulseNode(
+      this.audioContext,
+      'single-pulse-node-processor'
+    );
     node.connect(this.gainNode);
     node.parameters.get('frequency').value = freq;
     node.parameters.get('dutyIndex').value = dutyIndex;
@@ -66,7 +69,10 @@ export class NoteGenerator {
   }
 
   generateComposedPulseNote(freq, start, noteLength) {
-    const node = new PulseNode(this.audioContext, 'composed-pulse-node-processor');
+    const node = new PulseNode(
+      this.audioContext,
+      'composed-pulse-node-processor'
+    );
     node.connect(this.gainNode);
     node.parameters.get('frequency').value = freq;
     node.start();

@@ -82,7 +82,7 @@ export class Sequencer {
       }
     });
 
-    this.canvas.addEventListener('click', (e) => this.onClick(e));
+    this.canvas.addEventListener('click', e => this.onClick(e));
     this.draw();
   }
 
@@ -148,7 +148,7 @@ export class Sequencer {
     const yadv = h / this.numNotes;
     let x = 0;
     let y = 0;
-    
+
     ctx.clearRect(0, 0, w, h);
 
     if (this.currentStep >= 0) {
@@ -161,7 +161,7 @@ export class Sequencer {
     ctx.strokeStyle = 'rgb(200, 180, 200)';
     y = 0;
     for (let i = 0; i <= this.numNotes; i++) {
-      ctx.lineWidth = ((i + 1) % 8 == 0) ? 2 : 1;
+      ctx.lineWidth = (i + 1) % 8 == 0 ? 2 : 1;
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(w, y);
@@ -171,7 +171,7 @@ export class Sequencer {
 
     x = 0;
     for (let i = 0; i <= this.numSteps; i++) {
-      ctx.lineWidth = (i % 4 == 0) ? 2 : 1;
+      ctx.lineWidth = i % 4 == 0 ? 2 : 1;
       ctx.beginPath();
       ctx.moveTo(x, 0);
       ctx.lineTo(x, h);
@@ -196,8 +196,10 @@ export class Sequencer {
   }
 
   onClick(e) {
-    const x = e.clientX + document.documentElement.scrollLeft - this.canvas.offsetLeft;
-    const y = e.clientY + document.documentElement.scrollTop - this.canvas.offsetTop;
+    const x =
+      e.clientX + document.documentElement.scrollLeft - this.canvas.offsetLeft;
+    const y =
+      e.clientY + document.documentElement.scrollTop - this.canvas.offsetTop;
     const row = Math.floor(y / (this.canvas.height / this.numNotes));
     const col = Math.floor(x / (this.canvas.width / this.numSteps));
     this.notes[col][row] = !this.notes[col][row];

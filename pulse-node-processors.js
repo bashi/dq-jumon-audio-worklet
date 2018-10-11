@@ -1,10 +1,10 @@
-const DUTIES = [ 0.125, 0.25, 0.5 ];
+const DUTIES = [0.125, 0.25, 0.5];
 
 class SinglePulseNodeProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
     return [
       { name: 'frequency', defaultValue: 440 },
-      { name: 'dutyIndex', defaultValue: 0 },
+      { name: 'dutyIndex', defaultValue: 0 }
     ];
   }
 
@@ -17,7 +17,7 @@ class SinglePulseNodeProcessor extends AudioWorkletProcessor {
     this.startAt = -1;
     this.stopAt = -1;
 
-    this.port.onmessage = (e) => this.handleMessage(e);
+    this.port.onmessage = e => this.handleMessage(e);
   }
 
   handleMessage(e) {
@@ -31,9 +31,12 @@ class SinglePulseNodeProcessor extends AudioWorkletProcessor {
   process(inputs, outputs, parameters) {
     if (this.startAt < 0) return;
     let output = outputs[0][0];
+
+    // These parameters should be `a-rate` but Chrome 69 treats these as `k-rate`.
+    const freq = parameters.frequency[0];
+    const dutyIndex = parameters.dutyIndex[0];
+
     for (let i = 0; i < output.length; i++) {
-      const freq = parameters.frequency[i];
-      const dutyIndex = parameters.dutyIndex[i];
       const dutyRatio = DUTIES[dutyIndex];
       const samplesPerWave = Math.floor(sampleRate / freq);
       const numOnSamples = Math.floor(samplesPerWave * dutyRatio);
@@ -56,9 +59,7 @@ registerProcessor('single-pulse-node-processor', SinglePulseNodeProcessor);
 
 class ComposedPulseNodeProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
-    return [
-      { name: 'frequency', defaultValue: 440 },
-    ];
+    return [{ name: 'frequency', defaultValue: 440 }];
   }
 
   constructor(options) {
@@ -72,7 +73,7 @@ class ComposedPulseNodeProcessor extends AudioWorkletProcessor {
     this.startAt = -1;
     this.stopAt = -1;
 
-    this.port.onmessage = (e) => this.handleMessage(e);
+    this.port.onmessage = e => this.handleMessage(e);
   }
 
   handleMessage(e) {
@@ -86,8 +87,9 @@ class ComposedPulseNodeProcessor extends AudioWorkletProcessor {
   process(inputs, outputs, parameters) {
     if (this.startAt < 0) return;
     let output = outputs[0][0];
+    // This parameter should be `a-rate` but Chrome 69 treats it as `k-rate`.
+    const freq = parameters.frequency[0];
     for (let i = 0; i < output.length; i++) {
-      const freq = parameters.frequency[i];
       const dutyRatio = DUTIES[this.dutyIndex];
       const samplesPerWave = Math.floor(sampleRate / freq);
       const numOnSamples = Math.floor(samplesPerWave * dutyRatio);
